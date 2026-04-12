@@ -141,7 +141,9 @@ export default function AddJobForm() {
         <div className="flex justify-end mt-2">
           <button
             type="submit"
-            className="cyber-button w-full md:w-auto min-w-[200px] flex items-center justify-center gap-2 h-[38px] px-4 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)]"     
+            className="cyber-button w-full md:w-auto min-w-[200px] flex items-center justify-center gap-2 h-[38px] px-4 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)]"
+          >
+            <Send size={16} />
             <span>TRANSMIT</span>
           </button>
         </div>

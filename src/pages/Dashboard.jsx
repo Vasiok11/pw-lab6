@@ -1,5 +1,5 @@
 import { useStore } from '../store/useStore';
-import { Activity, Briefcase, Code2, BrainCircuit, Star, ExternalLink, Calendar } from 'lucide-react';
+import { Activity, Briefcase, Code2, BrainCircuit, Star, ExternalLink, Calendar, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
@@ -11,6 +11,19 @@ export default function Dashboard() {
   
   const completedResources = learningResources.filter(r => r.progress === 100).length;
   const learningProgress = learningResources.filter(r => r.progress > 0 && r.progress < 100).length;
+
+  const handleExport = () => {
+    const data = { skills, projects, learningResources, jobs };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `cyber-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -141,6 +154,31 @@ export default function Dashboard() {
         </div>
 
       </div>
+
+      {/* DATA CONTROLLER - EXPORT */}
+      <div className="cyber-panel p-6 border-l-[4px] border-neon-pink mt-4">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <h3 className="text-lg font-bold uppercase tracking-widest flex items-center gap-2 text-neon-pink">
+               DATA_BACKUP_SYS
+            </h3>
+            <p className="text-xs font-mono opacity-70 mt-1">
+              Extract and download a local copy of your system data arrays.
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <button 
+              onClick={handleExport}
+              className="cyber-button flex-1 md:flex-none flex items-center justify-center gap-2 border-neon-pink text-neon-pink hover:bg-[var(--color-cyber-pink)] hover:text-white hover:border-[var(--color-cyber-pink)]"
+            >
+              <Download size={16} />
+              <span>Extract Backup</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
