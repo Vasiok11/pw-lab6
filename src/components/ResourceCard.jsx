@@ -1,14 +1,36 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Trash2, Edit2, Link as LinkIcon, BookOpen, MonitorPlay, FileText, CheckCircle2 } from 'lucide-react';
+import { Trash2, Edit2, Link as LinkIcon, BookOpen, MonitorPlay, FileText, CheckCircle2, X, Check } from 'lucide-react';
 
 export default function ResourceCard({ resource }) {
   const removeResource = useStore((state) => state.removeResource);
   const updateResourceProgress = useStore((state) => state.updateResourceProgress);
+  const updateResource = useStore((state) => state.updateResource);
 
-  // We will expand on this edit state in step 7.4! 
-  // For now, we only handle tracking progress and removing the resource.
   const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(resource.title || '');
+  const [editAuthor, setEditAuthor] = useState(resource.author || '');
+  const [editType, setEditType] = useState(resource.type || 'Course');
+  const [editSource, setEditSource] = useState(resource.source || '');
+
+  const handleSave = () => {
+    if (!editTitle.trim()) return;
+    updateResource(resource.id, {
+      title: editTitle.trim(),
+      author: editAuthor.trim(),
+      type: editType,
+      source: editSource.trim()
+    });
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditTitle(resource.title || '');
+    setEditAuthor(resource.author || '');
+    setEditType(resource.type || 'Course');
+    setEditSource(resource.source || '');
+    setIsEditing(false);
+  };
 
   const getIcon = (type) => {
     switch (type) {
@@ -26,6 +48,65 @@ export default function ResourceCard({ resource }) {
   };
 
   const isCompleted = resource.progress === 100;
+
+  if (isEditing) {
+    return (
+      <div className="cyber-panel p-5 border-l-[3px] border-l-neon-pink">
+        <div className="flex flex-col gap-3">
+          <label className="text-[10px] uppercase font-bold opacity-70">Resource Title</label>
+          <input
+            type="text"
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
+          />
+
+          <div className="flex flex-col md:flex-row gap-3">
+            <div className="flex-1">
+              <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Author</label>
+              <input
+                type="text"
+                value={editAuthor}
+                onChange={(e) => setEditAuthor(e.target.value)}
+                className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Format</label>
+              <select
+                value={editType}
+                onChange={(e) => setEditType(e.target.value)}
+                className="w-full appearance-none bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none cursor-pointer uppercase text-xs font-bold tracking-wider"
+              >
+                <option value="Course">COURSE</option>
+                <option value="Book">BOOK</option>
+                <option value="Article">ARTICLE</option>
+                <option value="Video">VIDEO</option>
+                <option value="Docs">DOCUMENTATION</option>
+              </select>
+            </div>
+          </div>
+
+          <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Source URL</label>
+          <input
+            type="text"
+            value={editSource}
+            onChange={(e) => setEditSource(e.target.value)}
+            className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
+          />
+
+          <div className="flex justify-end gap-3 mt-3">
+            <button onClick={handleCancel} className="flex items-center gap-1 p-2 text-[var(--text-muted)] hover:text-red-500 transition-all text-xs font-bold uppercase border border-transparent hover:border-red-500">
+              <X size={14} /> Abort
+            </button>
+            <button onClick={handleSave} className="flex items-center gap-1 p-2 text-neon-pink transition-all text-xs font-bold uppercase border border-[var(--border-accent)] hover:border-neon-pink">
+              <Check size={14} /> Re-Inject
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`cyber-panel p-5 transition-transform duration-200 flex flex-col ${isCompleted ? 'border-l-[4px] border-l-neon-pink opacity-80' : 'border-l-[2px] border-l-[var(--border-accent)]'}`}>
