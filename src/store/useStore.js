@@ -40,6 +40,9 @@ export const useStore = create(
       removeProject: (id) => set((state) => ({
         projects: state.projects.filter(p => p.id !== id)
       })),
+      updateProject: (id, updatedProject) => set((state) => ({
+        projects: state.projects.map(p => p.id === id ? { ...p, ...updatedProject } : p)
+      })),
       toggleProjectHighlight: (id) => set((state) => ({
         projects: state.projects.map(p => 
           p.id === id ? { ...p, highlighted: !p.highlighted } : p

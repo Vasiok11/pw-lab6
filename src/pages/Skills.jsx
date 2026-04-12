@@ -11,7 +11,7 @@ export default function Skills() {
 
   const filteredSkills = useMemo(() => {
     return skills.filter((skill) => {
-      const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = (skill.name || '').toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = categoryFilter === 'All' || skill.category === categoryFilter;
       return matchesSearch && matchesCategory;
     });
