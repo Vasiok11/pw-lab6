@@ -122,9 +122,9 @@ export default function SkillCard({ skill }) {
             >
               <X size={14} /> Abort
             </button>
-            <button 
-              onClick={handleSave} 
-              className="flex items-center gap-1 p-2 text-neon-pink hover:bg-neon-pink hover:bg-opacity-10 border border-[var(--border-accent)] hover:border-neon-pink transition-all text-xs font-bold uppercase"
+            <button
+              onClick={handleSave}
+              className="flex items-center gap-1 p-2 text-[var(--color-cyber-pink)] hover:bg-[var(--color-cyber-pink)] hover:bg-opacity-10 border border-[var(--border-accent)] hover:border-[var(--color-cyber-pink)] transition-all text-xs font-bold uppercase"
             >
               <Check size={14} /> Re-Inject
             </button>
@@ -143,7 +143,7 @@ export default function SkillCard({ skill }) {
           <h4 className="text-xl font-bold uppercase tracking-widest flex items-center gap-2 mb-2">
             <Terminal size={18} className="text-[var(--border-accent)]" /> {skill.name}
           </h4>
-          <span className="text-xs font-mono font-bold uppercase bg-[var(--border-accent)] bg-opacity-20 text-[var(--text-primary)] px-2 py-1 rounded-sm border border-[var(--border-accent)] border-opacity-50 inline-block">
+          <span className="text-xs font-mono font-bold uppercase text-[var(--border-accent)] px-2 py-1 rounded-sm border border-[var(--border-accent)] inline-block">
             {skill.category}
           </span>
         </div>
@@ -202,10 +202,10 @@ export default function SkillCard({ skill }) {
               return (
                 <a 
                   key={id}
-                  href={res.url}
+                  href={res.source}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs bg-[var(--bg-primary)] border border-neon-pink text-neon-pink px-2 py-1 flex items-center gap-1 hover:bg-neon-pink hover:text-[var(--bg-primary)] hover:shadow-[0_0_5px_var(--neon-pink)] transition-all truncate max-w-full"
+                  className="text-xs bg-[var(--bg-primary)] border border-neon-pink text-neon-pink px-2 py-1 flex items-center gap-1 hover:bg-[var(--color-cyber-pink)] hover:text-white hover:shadow-[0_0_5px_var(--color-cyber-pink)] transition-all truncate max-w-full"
                   title={res.title}
                 >
                   {res.title}
@@ -215,4 +215,7 @@ export default function SkillCard({ skill }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
 

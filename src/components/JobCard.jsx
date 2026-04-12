@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Trash2, Edit2, Building2, MapPin, ExternalLink, Calendar, Briefcase, X, Check } from 'lucide-react';
+import { Trash2, Edit2, Building2, MapPin, ExternalLink, Calendar, Briefcase, X, Check, Cpu } from 'lucide-react';
 
 export default function JobCard({ job }) {
   const removeJob = useStore((state) => state.removeJob);
   const updateJob = useStore((state) => state.updateJob);
+  const skills = useStore((state) => state.skills);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editCompany, setEditCompany] = useState(job.company || '');
@@ -12,6 +13,7 @@ export default function JobCard({ job }) {
   const [editLocation, setEditLocation] = useState(job.location || '');
   const [editUrl, setEditUrl] = useState(job.url || '');
   const [editStatus, setEditStatus] = useState(job.status || 'Applied');
+  const [editLinkedSkills, setEditLinkedSkills] = useState(job.linkedSkills || []);
 
   const handleSave = () => {
     if (!editCompany.trim() || !editPosition.trim()) return;
@@ -20,7 +22,8 @@ export default function JobCard({ job }) {
       position: editPosition.trim(),
       location: editLocation.trim(),
       url: editUrl.trim(),
-      status: editStatus
+      status: editStatus,
+      linkedSkills: editLinkedSkills,
     });
     setIsEditing(false);
   };
@@ -31,6 +34,7 @@ export default function JobCard({ job }) {
     setEditLocation(job.location || '');
     setEditUrl(job.url || '');
     setEditStatus(job.status || 'Applied');
+    setEditLinkedSkills(job.linkedSkills || []);
     setIsEditing(false);
   };
 
@@ -39,9 +43,9 @@ export default function JobCard({ job }) {
   const getStatusColor = (status) => {
     switch (status) {
       case 'Applied': return 'text-[var(--text-primary)] border-[var(--border-accent)] bg-transparent';
-      case 'Interviewing': return 'text-yellow-400 border-yellow-400 bg-yellow-400 bg-opacity-10';
-      case 'Offer': return 'text-green-400 border-green-400 bg-green-400 bg-opacity-10 shadow-[0_0_10px_rgba(74,222,128,0.4)]';
-      case 'Rejected': return 'text-red-500 border-red-500 bg-red-500 bg-opacity-10 opacity-70';
+      case 'Interviewing': return 'text-yellow-600 dark:text-yellow-400 border-yellow-500 bg-yellow-500/10';
+      case 'Offer': return 'text-green-600 dark:text-green-400 border-green-500 bg-green-500/10 shadow-[0_0_10px_rgba(74,222,128,0.4)]';
+      case 'Rejected': return 'text-red-500 border-red-500 bg-red-500/10 opacity-70';
       default: return 'text-[var(--border-accent)] border-[var(--border-accent)] bg-transparent';
     }
   };
@@ -98,6 +102,35 @@ export default function JobCard({ job }) {
             onChange={(e) => setEditUrl(e.target.value)}
             className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
           />
+
+          <label className="text-[10px] uppercase font-bold opacity-70 mt-1 block">REQ_SKILLS [Stack Alignment]</label>
+          <div className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-sm max-h-32 overflow-y-auto cyber-scrollbar flex flex-wrap gap-2">
+            {skills.length === 0 ? (
+              <span className="text-xs text-[var(--text-muted)] italic">No skills detected.</span>
+            ) : (
+               skills.map(skill => (
+                 <label key={skill.id} className="flex items-center gap-1 cursor-pointer text-xs p-1 border hover:border-neon-pink transition-colors select-none" style={{
+                     borderColor: editLinkedSkills.includes(skill.id) ? 'var(--neon-pink)' : 'var(--border-accent)',
+                     color: editLinkedSkills.includes(skill.id) ? 'var(--neon-pink)' : 'var(--text-primary)',
+                     backgroundColor: editLinkedSkills.includes(skill.id) ? 'rgba(255, 0, 102, 0.1)' : 'transparent'
+                 }}>
+                   <input 
+                     type="checkbox"
+                     checked={editLinkedSkills.includes(skill.id)}
+                     onChange={(e) => {
+                       if (e.target.checked) {
+                         setEditLinkedSkills([...editLinkedSkills, skill.id]);
+                       } else {
+                         setEditLinkedSkills(editLinkedSkills.filter(id => id !== skill.id));
+                       }
+                     }}
+                     className="hidden"
+                   />
+                   <span>{skill.name}</span>
+                 </label>
+               ))
+            )}
+          </div>
 
           <div className="flex justify-end gap-3 mt-3">
             <button onClick={handleCancel} className="flex items-center gap-1 p-2 text-[var(--text-muted)] hover:text-red-500 transition-all text-xs font-bold uppercase border border-transparent hover:border-red-500">
@@ -158,6 +191,31 @@ export default function JobCard({ job }) {
           <Calendar size={14} className="text-[var(--border-accent)]" /> {formattedDate}
         </span>
       </div>
+
+      {/* Linked Skills ReadOnly View */}
+      {(job.linkedSkills && job.linkedSkills.length > 0) && (
+        <div className="mb-4 pt-2 border-t border-[var(--border-accent)] border-opacity-30">
+          <div className="text-[10px] font-mono tracking-widest uppercase opacity-80 mb-2 flex items-center gap-1 mt-2">
+            <Cpu size={12} className="text-neon-pink" />
+            <span>Req_Skills</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {job.linkedSkills.map(id => {
+              const skill = skills.find(s => s.id === id);
+              if (!skill) return null;
+              return (
+                <span 
+                  key={id}
+                  className="text-xs bg-[var(--bg-primary)] border border-neon-pink text-neon-pink px-2 py-1 flex items-center gap-1 cursor-default truncate max-w-full font-mono"
+                  title={skill.name}
+                >
+                  {skill.name}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Footer - Status Box & URL Outbound */}
       <div className="mt-auto pt-3 border-t border-[var(--border-accent)] border-opacity-20 flex justify-between items-center gap-2">

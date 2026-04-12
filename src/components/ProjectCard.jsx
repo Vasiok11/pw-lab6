@@ -146,7 +146,7 @@ export default function ProjectCard({ project }) {
       {project.techStack && project.techStack.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
           {project.techStack.map((tech, idx) => (
-            <span key={idx} className="bg-[var(--border-accent)] bg-opacity-20 text-[var(--text-primary)] border border-[var(--border-accent)] border-opacity-50 text-[10px] font-mono uppercase px-2 py-1">
+            <span key={idx} className="text-[var(--border-accent)] border border-[var(--border-accent)] text-[10px] font-mono uppercase px-2 py-1">
               #{tech}
             </span>
           ))}
