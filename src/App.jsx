@@ -1,120 +1,73 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from 'react'
+import './index.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage or system preference during initialization
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+      return savedTheme === 'dark'
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+  })
+
+  // Apply 'dark' class to html element when isDarkMode changes
+  useEffect(() => {
+    const root = window.document.documentElement
+    if (isDarkMode) {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+    // Save preference to localStorage
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light')
+  }, [isDarkMode])
+
+  const toggleTheme = () => {
+    setIsDarkMode((prevMode) => !prevMode)
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+    <div className="flex flex-col items-center justify-center min-h-screen p-8">
+      
+      {/* Container simulating a Cyberpunk panel/window */}
+      <div className="cyber-panel max-w-2xl w-full flex flex-col items-center justify-center gap-8 py-10">
+        
+        {/* Header section demonstrating the neon text class */}
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl md:text-5xl font-black uppercase text-neon-pink mb-4 tracking-wider">
+            SYSTEM // INITIALIZING
+          </h1>
+          <p className="opacity-80 md:text-lg">
+            v1.0.0 [Developer Career Tracker] is booting up...
           </p>
+          <div className="w-full h-1 bg-[var(--border-accent)] mt-4 shadow-[var(--shadow-accent)] relative">
+            <div className="absolute top-0 right-0 h-full w-1/3 bg-[var(--bg-panel)] animate-pulse"></div>
+          </div>
         </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+        {/* Content showing off the dark mode toggles */}
+        <div className="flex flex-col md:flex-row items-center gap-6 mt-8">
+          <button 
+            onClick={toggleTheme}
+            className="cyber-button text-lg font-bold"
+          >
+            {isDarkMode ? '> SWITCH TO LIGHT_MODE' : '> INIT DARK_MODE'}  
+          </button>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <button
+            className="cyber-button text-lg font-bold opacity-50 cursor-not-allowed"
+          >
+            {'>'} RUN DIAGNOSTICS
+          </button>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <p className="mt-8 text-xs uppercase opacity-60 font-mono text-center max-w-md">
+          Warning: Unauthorized access is strictly prohibited. This terminal is configured for [USER_ID: STUDENT].
+        </p>
+      </div>
+
+    </div>
   )
 }
 
