@@ -59,6 +59,11 @@ export const useStore = create(
           r.id === id ? { ...r, progress, status: progress === 100 ? 'completed' : 'learning' } : r
         )
       })),
+      updateResource: (id, updatedResource) => set((state) => ({
+        learningResources: state.learningResources.map(r => 
+          r.id === id ? { ...r, ...updatedResource } : r
+        )
+      })),
       removeResource: (id) => set((state) => ({
         learningResources: state.learningResources.filter(r => r.id !== id)
       })),
