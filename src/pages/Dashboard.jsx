@@ -48,7 +48,7 @@ export default function Dashboard() {
       </div>
 
       {/* Core Metrics Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Skills Metric */}
         <Link to="/skills" className="cyber-panel p-6 hover:shadow-[0_0_15px_var(--color-cyber-blue)] transition-shadow group flex flex-col items-center justify-center text-center gap-2 border-l-[2px] border-[var(--border-accent)] hover:border-neon-pink cursor-pointer">
           <Code2 size={24} className="text-[var(--text-muted)] group-hover:text-neon-pink transition-colors" />
