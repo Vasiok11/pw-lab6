@@ -1,12 +1,38 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Trash2, Edit2, Building2, MapPin, ExternalLink, Calendar, Briefcase } from 'lucide-react';
+import { Trash2, Edit2, Building2, MapPin, ExternalLink, Calendar, Briefcase, X, Check } from 'lucide-react';
 
 export default function JobCard({ job }) {
   const removeJob = useStore((state) => state.removeJob);
+  const updateJob = useStore((state) => state.updateJob);
 
-  // Reserved for inline editing block in step 8.4
   const [isEditing, setIsEditing] = useState(false);
+  const [editCompany, setEditCompany] = useState(job.company || '');
+  const [editPosition, setEditPosition] = useState(job.position || '');
+  const [editLocation, setEditLocation] = useState(job.location || '');
+  const [editUrl, setEditUrl] = useState(job.url || '');
+  const [editStatus, setEditStatus] = useState(job.status || 'Applied');
+
+  const handleSave = () => {
+    if (!editCompany.trim() || !editPosition.trim()) return;
+    updateJob(job.id, {
+      company: editCompany.trim(),
+      position: editPosition.trim(),
+      location: editLocation.trim(),
+      url: editUrl.trim(),
+      status: editStatus
+    });
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditCompany(job.company || '');
+    setEditPosition(job.position || '');
+    setEditLocation(job.location || '');
+    setEditUrl(job.url || '');
+    setEditStatus(job.status || 'Applied');
+    setIsEditing(false);
+  };
 
   const formattedDate = new Date(job.dateApplied).toLocaleDateString();
 
@@ -19,6 +45,72 @@ export default function JobCard({ job }) {
       default: return 'text-[var(--border-accent)] border-[var(--border-accent)] bg-transparent';
     }
   };
+
+  if (isEditing) {
+    return (
+      <div className="cyber-panel p-5 border-l-[3px] border-l-neon-pink">
+        <div className="flex flex-col gap-3">
+          <label className="text-[10px] uppercase font-bold opacity-70">Company</label>
+          <input
+            type="text"
+            value={editCompany}
+            onChange={(e) => setEditCompany(e.target.value)}
+            className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
+          />
+
+          <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Position</label>
+          <input
+            type="text"
+            value={editPosition}
+            onChange={(e) => setEditPosition(e.target.value)}
+            className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
+          />
+
+          <div className="flex flex-col md:flex-row gap-3">
+            <div className="flex-1">
+              <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Location</label>
+              <input
+                type="text"
+                value={editLocation}
+                onChange={(e) => setEditLocation(e.target.value)}
+                className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Status</label>
+              <select
+                value={editStatus}
+                onChange={(e) => setEditStatus(e.target.value)}
+                className="w-full appearance-none bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none cursor-pointer uppercase text-xs font-bold tracking-wider"
+              >
+                <option value="Applied">APPLIED</option>
+                <option value="Interviewing">INTERVIEWING</option>
+                <option value="Offer">OFFER</option>
+                <option value="Rejected">REJECTED</option>
+              </select>
+            </div>
+          </div>
+
+          <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Job Link</label>
+          <input
+            type="url"
+            value={editUrl}
+            onChange={(e) => setEditUrl(e.target.value)}
+            className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
+          />
+
+          <div className="flex justify-end gap-3 mt-3">
+            <button onClick={handleCancel} className="flex items-center gap-1 p-2 text-[var(--text-muted)] hover:text-red-500 transition-all text-xs font-bold uppercase border border-transparent hover:border-red-500">
+              <X size={14} /> Abort
+            </button>
+            <button onClick={handleSave} className="flex items-center gap-1 p-2 text-neon-pink transition-all text-xs font-bold uppercase border border-[var(--border-accent)] hover:border-neon-pink">
+              <Check size={14} /> Update
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="cyber-panel p-5 transition-transform duration-200 flex flex-col border-l-[2px] border-l-[var(--border-accent)] hover:border-l-neon-pink">
