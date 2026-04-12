@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { Trash2, Terminal, Edit2, X, Check } from 'lucide-react';
+import { Trash2, Terminal, Edit2, X, Check, BrainCircuit } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
 export default function SkillCard({ skill }) {
   const removeSkill = useStore((state) => state.removeSkill);
   const updateSkill = useStore((state) => state.updateSkill);
+  const learningResources = useStore((state) => state.learningResources);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(skill.name);
   const [editCategory, setEditCategory] = useState(skill.category);
-  const [editProficiency, setEditProficiency] = useState(skill.proficiency);
+  const [editProficiency, setEditProficiency] = useState(skill.proficiency);    
+  const [editLinkedResources, setEditLinkedResources] = useState(skill.linkedResources || []);
 
   // Map proficiency strings to numerical levels (1 to 4) for our visual blocks 
   const proficiencyLevels = {
@@ -21,12 +23,21 @@ export default function SkillCard({ skill }) {
 
   const level = proficiencyLevels[skill.proficiency] || 1;
 
+  const toggleResourceLink = (resourceId) => {
+    if (editLinkedResources.includes(resourceId)) {
+      setEditLinkedResources(editLinkedResources.filter(id => id !== resourceId));
+    } else {
+      setEditLinkedResources([...editLinkedResources, resourceId]);
+    }
+  };
+
   const handleSave = () => {
     if (!editName.trim()) return;
     updateSkill(skill.id, {
       name: editName.trim(),
       category: editCategory,
-      proficiency: editProficiency
+      proficiency: editProficiency,
+      linkedResources: editLinkedResources
     });
     setIsEditing(false);
   };
@@ -35,9 +46,12 @@ export default function SkillCard({ skill }) {
     setEditName(skill.name);
     setEditCategory(skill.category);
     setEditProficiency(skill.proficiency);
+    setEditLinkedResources(skill.linkedResources || []);
     setIsEditing(false);
   };
 
+  // Find linked resources mapped
+  const linkedResourcesData = (skill.linkedResources || []).map(id => learningResources.find(r => r.id === id)).filter(Boolean);
   if (isEditing) {
     return (
       <div className="cyber-panel p-5 border-l-[3px] border-l-neon-pink">
@@ -74,7 +88,33 @@ export default function SkillCard({ skill }) {
             <option value="Advanced">Advanced</option>
             <option value="Expert">Expert</option>
           </select>
-          
+
+          {/* New Linked Resources Selection Array */}
+          <label className="text-[10px] uppercase font-bold opacity-70 mt-1 block">Linked Modules [Course Links]</label>
+          <div className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-sm max-h-32 overflow-y-auto cyber-scrollbar">
+            {learningResources.length === 0 ? (
+              <span className="text-xs text-[var(--text-muted)] italic">No modules detected in system.</span>
+            ) : (
+               learningResources.map(resource => (
+                 <label key={resource.id} className="flex items-center gap-2 cursor-pointer mb-1 hover:text-neon-pink transition-colors">
+                   <input 
+                     type="checkbox"
+                     checked={editLinkedResources.includes(resource.id)}
+                     onChange={(e) => {
+                       if (e.target.checked) {
+                         setEditLinkedResources([...editLinkedResources, resource.id]);
+                       } else {
+                         setEditLinkedResources(editLinkedResources.filter(id => id !== resource.id));
+                       }
+                     }}
+                     className="cyber-checkbox"
+                   />
+                   <span className="truncate">{resource.title}</span>
+                 </label>
+               ))
+            )}
+          </div>
+
           <div className="flex justify-end gap-3 mt-3">
             <button 
               onClick={handleCancel} 
@@ -148,6 +188,31 @@ export default function SkillCard({ skill }) {
         </div>
       </div>
 
-    </div>
-  );
-}
+      {/* Linked Resources ReadOnly View */}
+      {(skill.linkedResources && skill.linkedResources.length > 0) && (
+        <div className="mt-4 pt-4 border-t border-[var(--border-accent)] border-opacity-30">
+          <div className="text-[10px] font-mono tracking-widest uppercase opacity-80 mb-2 flex items-center gap-1">
+            <BrainCircuit size={12} className="text-neon-pink" />
+            <span>Linked_Modules</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {skill.linkedResources.map(id => {
+              const res = learningResources.find(r => r.id === id);
+              if (!res) return null;
+              return (
+                <a 
+                  key={id}
+                  href={res.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs bg-[var(--bg-primary)] border border-neon-pink text-neon-pink px-2 py-1 flex items-center gap-1 hover:bg-neon-pink hover:text-[var(--bg-primary)] hover:shadow-[0_0_5px_var(--neon-pink)] transition-all truncate max-w-full"
+                  title={res.title}
+                >
+                  {res.title}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
