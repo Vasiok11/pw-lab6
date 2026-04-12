@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import RootLayout from './layouts/RootLayout'
 import Dashboard from './pages/Dashboard'
 import Skills from './pages/Skills'
@@ -36,7 +36,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<RootLayout toggleTheme={toggleTheme} isDarkMode={isDarkMode} />}>
           <Route index element={<Dashboard />} />
@@ -47,7 +47,7 @@ function App() {
           <Route path="resume" element={<ResumeBuilder />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
