@@ -76,6 +76,9 @@ export const useStore = create(
       updateJobStatus: (id, status) => set((state) => ({
         jobs: state.jobs.map(j => j.id === id ? { ...j, status } : j)
       })),
+      updateJob: (id, updatedJob) => set((state) => ({
+        jobs: state.jobs.map(j => j.id === id ? { ...j, ...updatedJob } : j)
+      })),
       removeJob: (id) => set((state) => ({
         jobs: state.jobs.filter(j => j.id !== id)
       }))
