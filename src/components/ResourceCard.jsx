@@ -39,6 +39,11 @@ export default function ResourceCard({ resource }) {
           <h4 className="text-lg font-bold uppercase tracking-widest text-[var(--text-primary)]">
             {resource.title}
           </h4>
+          {resource.author && (
+            <span className="text-[10px] text-[var(--text-muted)] font-mono mt-1 uppercase">
+              By: {resource.author}
+            </span>
+          )}
         </div>
 
         {/* Toolbar */}
