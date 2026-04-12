@@ -118,13 +118,13 @@ export default function SkillCard({ skill }) {
           <div className="flex justify-end gap-3 mt-3">
             <button 
               onClick={handleCancel} 
-              className="flex items-center gap-1 p-2 text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500 hover:bg-opacity-10 border border-transparent hover:border-red-500 transition-all text-xs font-bold uppercase"
+              className="flex items-center gap-1 p-2 text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500/10 border border-transparent hover:border-red-500 transition-all text-xs font-bold uppercase"
             >
               <X size={14} /> Abort
             </button>
             <button
               onClick={handleSave}
-              className="flex items-center gap-1 p-2 text-[var(--color-cyber-pink)] hover:bg-[var(--color-cyber-pink)] hover:bg-opacity-10 border border-[var(--border-accent)] hover:border-[var(--color-cyber-pink)] transition-all text-xs font-bold uppercase"
+              className="flex items-center gap-1 p-2 text-[var(--color-cyber-pink)] hover:bg-[var(--color-cyber-pink)] hover:text-white border border-[var(--border-accent)] hover:border-[var(--color-cyber-pink)] transition-all text-xs font-bold uppercase"
             >
               <Check size={14} /> Re-Inject
             </button>

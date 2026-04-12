@@ -33,10 +33,10 @@ export default function RootLayout({ toggleTheme, isDarkMode }) {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-4 px-4 py-3 font-bold uppercase tracking-wider text-sm transition-all duration-200 ${
+                  `flex items-center gap-4 px-4 py-3 font-bold uppercase tracking-wider text-sm transition-all duration-200 border border-[var(--border-accent)] ${
                     isActive
-                      ? 'bg-[var(--hover-accent)] text-[var(--hover-text)] cyber-panel !shadow-none'
-                      : 'hover:bg-[var(--border-accent)] hover:bg-opacity-10 opacity-70 hover:opacity-100 cyber-button !bg-transparent !shadow-none'
+                      ? '!bg-[var(--hover-accent)] text-[var(--hover-text)]'
+                      : 'hover:!bg-[var(--border-accent)] hover:text-[var(--hover-text)] opacity-70 hover:opacity-100 bg-transparent'
                   }`
                 }
               >

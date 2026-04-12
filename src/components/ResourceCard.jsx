@@ -99,7 +99,7 @@ export default function ResourceCard({ resource }) {
             <button onClick={handleCancel} className="flex items-center gap-1 p-2 text-[var(--text-muted)] hover:text-red-500 transition-all text-xs font-bold uppercase border border-transparent hover:border-red-500">
               <X size={14} /> Abort
             </button>
-            <button onClick={handleSave} className="flex items-center gap-1 p-2 text-neon-pink transition-all text-xs font-bold uppercase border border-[var(--border-accent)] hover:border-neon-pink">
+              <button onClick={handleSave} className="flex items-center gap-1 p-2 text-[var(--color-cyber-pink)] hover:bg-[var(--color-cyber-pink)] hover:text-white transition-all text-xs font-bold uppercase border border-[var(--border-accent)] hover:border-[var(--color-cyber-pink)]">
               <Check size={14} /> Re-Inject
             </button>
           </div>
