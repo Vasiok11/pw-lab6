@@ -1,13 +1,14 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Hexagon, Code2, Briefcase, BookOpen, Target, Settings, TerminalSquare } from 'lucide-react';
+import { Hexagon, Code2, Briefcase, BookOpen, Target, Settings, TerminalSquare, FileText } from 'lucide-react';
 
 export default function RootLayout({ toggleTheme, isDarkMode }) {
   const navItems = [
     { to: '/', icon: <Hexagon size={20} />, label: 'Dashboard' },
     { to: '/skills', icon: <Code2 size={20} />, label: 'Skills Db' },
-    { to: '/projects', icon: <TerminalSquare size={20} />, label: 'Projects' },
-    { to: '/learning', icon: <BookOpen size={20} />, label: 'Data Feeds' },
+    { to: '/projects', icon: <TerminalSquare size={20} />, label: 'Projects' }, 
+    { to: '/learning', icon: <BookOpen size={20} />, label: 'Data Feeds' },     
     { to: '/jobs', icon: <Target size={20} />, label: 'Job Matrix' },
+    { to: '/resume', icon: <FileText size={20} />, label: 'Compile Resume' },
   ];
 
   return (

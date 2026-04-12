@@ -6,6 +6,7 @@ import Skills from './pages/Skills'
 import Projects from './pages/Projects'
 import Learning from './pages/Learning'
 import Jobs from './pages/Jobs'
+import ResumeBuilder from './pages/ResumeBuilder'
 import './index.css'
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="projects" element={<Projects />} />
           <Route path="learning" element={<Learning />} />
           <Route path="jobs" element={<Jobs />} />
+          <Route path="resume" element={<ResumeBuilder />} />
         </Route>
       </Routes>
     </BrowserRouter>

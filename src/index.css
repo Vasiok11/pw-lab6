@@ -98,3 +98,11 @@
     text-shadow: 0 0 8px rgba(255, 0, 255, 0.8);
   }
 }
+
+@media print {
+  body { background: white !important; color: black !important; }
+  .no-print { display: none !important; }
+  .print-area { box-shadow: none !important; margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; }
+  @page { margin: 1cm; }
+}
+
