@@ -43,9 +43,9 @@ export default function JobCard({ job }) {
   const getStatusColor = (status) => {
     switch (status) {
       case 'Applied': return 'text-[var(--text-primary)] border-[var(--border-accent)] bg-transparent';
-      case 'Interviewing': return 'text-yellow-600 dark:text-yellow-400 border-yellow-500 bg-yellow-500/10';
-      case 'Offer': return 'text-green-600 dark:text-green-400 border-green-500 bg-green-500/10 shadow-[0_0_10px_rgba(74,222,128,0.4)]';
-      case 'Rejected': return 'text-red-500 border-red-500 bg-red-500/10 opacity-70';
+      case 'Interviewing': return 'text-yellow-600 dark:text-yellow-400 border-yellow-500 bg-transparent';
+      case 'Offer': return 'text-green-600 dark:text-green-400 border-green-500 bg-transparent shadow-[0_0_10px_rgba(74,222,128,0.4)]';
+      case 'Rejected': return 'text-red-500 border-red-500 bg-transparent opacity-70';
       default: return 'text-[var(--border-accent)] border-[var(--border-accent)] bg-transparent';
     }
   };

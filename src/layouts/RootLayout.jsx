@@ -21,7 +21,7 @@ export default function RootLayout({ toggleTheme, isDarkMode }) {
       {/* Mobile Menu Backdrop */}
       {mobileMenuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-sm"
+          className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
           onClick={closeMobileMenu}
         />
       )}
@@ -110,3 +110,4 @@ export default function RootLayout({ toggleTheme, isDarkMode }) {
     </div>
   );
 }
+

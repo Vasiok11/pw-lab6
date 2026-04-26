@@ -184,7 +184,7 @@ export default function ResourceCard({ resource }) {
         </div>
 
         {/* Completion checkmark */}
-        <div className={`flex items-center justify-center shrink-0 w-8 h-8 rounded-full border border-[var(--border-accent)] ${isCompleted ? 'bg-neon-pink bg-opacity-20 text-neon-pink border-neon-pink shadow-[0_0_10px_#f0f]' : 'text-[var(--text-muted)] opacity-50'}`}>
+        <div className={`flex items-center justify-center shrink-0 w-8 h-8 rounded-full border border-[var(--border-accent)] ${isCompleted ? 'bg-transparent text-neon-pink border-neon-pink shadow-[0_0_10px_#f0f]' : 'text-[var(--text-muted)] opacity-50'}`}>
           <CheckCircle2 size={18} />
         </div>
       </div>
@@ -192,3 +192,4 @@ export default function ResourceCard({ resource }) {
     </div>
   );
 }
+

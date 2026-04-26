@@ -52,7 +52,7 @@ export default function Projects() {
           onClick={() => setFilterHighlight(!filterHighlight)}
           className={`cyber-button w-full md:w-auto shrink-0 flex justify-center items-center gap-2 h-[42px] px-6 text-xs transition-shadow ${
             filterHighlight 
-              ? 'bg-neon-pink text-[var(--bg-panel)] bg-opacity-90 shadow-[0_0_10px_rgba(255,0,255,0.6)]' 
+              ? 'bg-neon-pink text-[var(--bg-panel)] shadow-[0_0_10px_rgba(255,0,255,0.6)]' 
               : 'bg-transparent text-[var(--text-muted)] hover:text-neon-pink border-[var(--border-accent)]'
           }`}
         >

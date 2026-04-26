@@ -40,7 +40,7 @@ export default function Dashboard() {
           </div>
           <div className="text-right flex flex-col md:items-end">
             <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--border-accent)] opacity-70">System Status</span>
-            <span className="font-mono text-green-400 bg-green-400 bg-opacity-10 px-2 py-1 border border-green-500 uppercase tracking-widest text-xs font-bold inline-block mt-1">
+            <span className="font-mono text-green-400 bg-green-900/40 px-2 py-1 border border-green-500 uppercase tracking-widest text-xs font-bold inline-block mt-1">
               OPTIMAL
             </span>
           </div>
@@ -90,7 +90,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-2">
         {/* Starred Projects Panel */}
         <div className="cyber-panel flex flex-col h-full">
-          <div className="p-4 border-b border-[var(--border-accent)] border-opacity-30 flex justify-between items-center bg-[var(--border-accent)] bg-opacity-5">
+          <div className="p-4 border-b border-[var(--border-accent)] border-opacity-30 flex justify-between items-center bg-[#0ff]/5">
             <h3 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
               <Star size={16} className="text-neon-pink" /> 
               Starred Deployments
@@ -120,7 +120,7 @@ export default function Dashboard() {
 
         {/* Active Communications Panel (Jobs) */}
         <div className="cyber-panel flex flex-col h-full">
-          <div className="p-4 border-b border-[var(--border-accent)] border-opacity-30 flex justify-between items-center bg-[var(--border-accent)] bg-opacity-5">
+          <div className="p-4 border-b border-[var(--border-accent)] border-opacity-30 flex justify-between items-center bg-[#0ff]/5">
             <h3 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
               <Briefcase size={16} className="text-neon-pink" /> 
               Active Transmissions
@@ -137,7 +137,7 @@ export default function Dashboard() {
                   </span>
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                  <span className={`text-[10px] uppercase font-bold px-2 py-1 ${j.status === 'Offer' ? 'bg-green-400 bg-opacity-20 text-green-400' : 'bg-yellow-400 bg-opacity-20 text-yellow-400'}`}>
+                    <span className={`text-[10px] uppercase font-bold px-2 py-1 ${j.status === 'Offer' ? 'bg-transparent border border-green-400 text-green-400' : 'bg-transparent border border-yellow-400 text-yellow-400'}`}>
                     {j.status}
                   </span>
                   <span className="text-[10px] font-mono opacity-50 flex items-center gap-1">
@@ -182,3 +182,6 @@ export default function Dashboard() {
     </div>
   );
 }
+
+
+
