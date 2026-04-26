@@ -44,7 +44,7 @@ export default function AddProjectForm() {
   return (
     <div className="cyber-panel mb-8 p-6">
       <h3 className="text-xl font-bold uppercase tracking-widest text-[var(--border-accent)] mb-4">
-        + Init_Deployment_Record
+        + Add_Project
       </h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">

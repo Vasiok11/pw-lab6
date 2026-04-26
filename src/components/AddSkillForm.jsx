@@ -25,7 +25,7 @@ export default function AddSkillForm() {
   return (
     <div className="cyber-panel mb-8 p-6">
       <h3 className="text-xl font-bold uppercase tracking-widest text-[var(--border-accent)] mb-4">
-        + Init_New_Skill
+        + Add_New_Skill
       </h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 items-end">

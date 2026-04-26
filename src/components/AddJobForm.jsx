@@ -39,7 +39,7 @@ export default function AddJobForm() {
   return (
     <div className="cyber-panel mb-8 p-6">
       <h3 className="text-xl font-bold uppercase tracking-widest text-[var(--border-accent)] mb-4">
-        + Initiate_Contract_Transmission
+        + Track_Application
       </h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -51,7 +51,7 @@ export default function AddJobForm() {
               type="text"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              placeholder="e.g., Arasaka Corp."
+              placeholder="e.g., Google Corp."
               className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none focus:shadow-[var(--shadow-accent)] transition-shadow text-sm"
             />
           </div>
@@ -63,7 +63,7 @@ export default function AddJobForm() {
               type="text"
               value={position}
               onChange={(e) => setPosition(e.target.value)}
-              placeholder="e.g., Senior Netrunner"
+              placeholder="e.g., Senior Software Engineer"
               className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none focus:shadow-[var(--shadow-accent)] transition-shadow text-sm"
             />
           </div>
@@ -76,7 +76,7 @@ export default function AddJobForm() {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="e.g., Remote, Night City"
+              placeholder="Remote"
               className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none focus:shadow-[var(--shadow-accent)] transition-shadow text-sm"
             />
           </div>

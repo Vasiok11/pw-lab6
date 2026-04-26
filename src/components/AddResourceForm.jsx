@@ -33,7 +33,7 @@ export default function AddResourceForm() {
   return (
     <div className="cyber-panel mb-8 p-6">
       <h3 className="text-xl font-bold uppercase tracking-widest text-[var(--border-accent)] mb-4">
-        + Inject_Knowledge_Stream
+        + Add_Knowledge
       </h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
