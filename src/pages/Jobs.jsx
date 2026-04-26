@@ -24,10 +24,10 @@ export default function Jobs() {
     <div className="flex flex-col gap-6">
       <div className="cyber-panel p-8">
         <h2 className="text-3xl font-black text-neon-pink uppercase tracking-widest mb-6">
-          &gt;&gt; MISSION_TARGETS
+          &gt;&gt; JOBS
         </h2>
         <p className="opacity-80">
-          Job hunt radar online. Scanning for priority targets.
+          Manage your job applications and track interview progress.
         </p>
       </div>
 

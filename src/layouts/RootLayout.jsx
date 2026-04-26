@@ -8,11 +8,11 @@ export default function RootLayout({ toggleTheme, isDarkMode }) {
 
   const navItems = [
     { to: '/', icon: <Hexagon size={20} />, label: 'Dashboard' },
-    { to: '/skills', icon: <Code2 size={20} />, label: 'Skills Db' },
+    { to: '/skills', icon: <Code2 size={20} />, label: 'Skills' },
     { to: '/projects', icon: <TerminalSquare size={20} />, label: 'Projects' }, 
-    { to: '/learning', icon: <BookOpen size={20} />, label: 'Data Feeds' },     
-    { to: '/jobs', icon: <Target size={20} />, label: 'Job Matrix' },
-    { to: '/resume', icon: <FileText size={20} />, label: 'Compile Resume' },
+    { to: '/learning', icon: <BookOpen size={20} />, label: 'Learning' },
+    { to: '/jobs', icon: <Target size={20} />, label: 'Jobs' },
+    { to: '/resume', icon: <FileText size={20} />, label: 'Resume' },
   ];
 
   return (

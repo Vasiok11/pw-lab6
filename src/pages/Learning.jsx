@@ -24,10 +24,10 @@ export default function Learning() {
     <div className="flex flex-col gap-6">
       <div className="cyber-panel p-8">
         <h2 className="text-3xl font-black text-neon-pink uppercase tracking-widest mb-6">
-          &gt;&gt; DATA_ACQUISITION
+          &gt;&gt; LEARNING
         </h2>
         <p className="opacity-80 flex items-center justify-between">
-          Course feeds and book uploads active. Download in progress...
+          Track your ongoing courses, books, and learning resources.
         </p>
       </div>
 

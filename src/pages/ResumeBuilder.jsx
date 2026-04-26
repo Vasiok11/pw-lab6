@@ -121,10 +121,10 @@ export default function ResumeBuilder() {
           <div>
             <h2 className="text-3xl font-black text-[var(--text-primary)] uppercase tracking-widest flex items-center gap-3">
               <FileText size={28} className="text-[var(--border-accent)]" /> 
-              RESUME_BUILDER_V2
+              RESUME
             </h2>
             <p className="opacity-80 font-mono text-sm mt-1">
-              Select objects from your database to populate local resume fields. Edit text manually before compilation without affecting the root database.
+              Select items from your database to auto-fill your resume. Edit the text manually before printing without affecting your saved data.
             </p>
           </div>
           <button 

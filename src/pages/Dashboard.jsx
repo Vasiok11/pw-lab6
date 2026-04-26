@@ -32,10 +32,10 @@ export default function Dashboard() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h2 className="text-3xl font-black text-neon-pink uppercase tracking-widest mb-2 flex items-center gap-3">
-              <Activity size={28} /> &gt;&gt; SYSTEM_OVERVIEW
+              <Activity size={28} /> &gt;&gt; OVERVIEW
             </h2>
             <p className="opacity-80 font-mono text-sm">
-              All neural links active. Tracking {skills.length + projects.length + learningResources.length + jobs.length} total data nodes.
+              Overview of your career progress. Tracking {skills.length + projects.length + learningResources.length + jobs.length} total items.
             </p>
           </div>
           <div className="text-right flex flex-col md:items-end">

@@ -21,10 +21,10 @@ export default function Skills() {
     <div className="flex flex-col gap-6">
       <div className="cyber-panel p-8">
         <h2 className="text-3xl font-black text-neon-pink uppercase tracking-widest mb-6">
-          &gt;&gt; SKILL_DATABASE
+          &gt;&gt; SKILLS
         </h2>
         <p className="opacity-80">
-          Neural link stable. Standardize and inject your proficiency nodes below.
+          Manage and organize your technical and professional skills.
         </p>
       </div>
 

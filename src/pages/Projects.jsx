@@ -23,10 +23,10 @@ export default function Projects() {
     <div className="flex flex-col gap-6">
       <div className="cyber-panel p-8">
         <h2 className="text-3xl font-black text-neon-pink uppercase tracking-widest mb-6">
-          &gt;&gt; PORTFOLIO_ARCHIVE
+          &gt;&gt; PROJECTS
         </h2>
         <p className="opacity-80 flex items-center justify-between">
-          Initiate deployment archives here. Managing successful software pushes.
+          Showcase your portfolio and track your successful projects.
         </p>
       </div>
 
