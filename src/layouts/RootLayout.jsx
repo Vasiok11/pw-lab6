@@ -36,7 +36,7 @@ export default function RootLayout({ toggleTheme, isDarkMode }) {
               <div className="flex items-center gap-3">
                 <Briefcase size={32} className="text-neon-pink animate-pulse" />
                 <h1 className="text-xl font-black uppercase tracking-widest leading-tight">
-                  System // <br /> <span className="text-neon-pink">Tracker</span>
+                  Career // <br /> <span className="text-neon-pink">Tracker</span>
                 </h1>
               </div>
               <button className="md:hidden text-[var(--border-accent)] hover:text-neon-pink transition-colors focus:outline-none" onClick={closeMobileMenu}>
