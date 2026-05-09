@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { setupDatabase } from './db.js';
 import { generateToken, authenticateToken } from './auth.js';
 import { setupRoutes } from './routes.js';
+import { setupSwagger } from './swagger.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ let db;
 setupDatabase().then((database) => {
   db = database;
   setupRoutes(app, db); // Mount CRUD routes once DB is ready
+  setupSwagger(app);    // Mount Swagger UI
 }).catch(err => {
   console.error('[ERROR] Failed to connect to database:', err);
 });
