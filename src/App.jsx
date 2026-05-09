@@ -6,10 +6,17 @@ import Skills from './pages/Skills'
 import Projects from './pages/Projects'
 import Learning from './pages/Learning'
 import Jobs from './pages/Jobs'
-import ResumeBuilder from './pages/ResumeBuilder'
+import { useStore } from './store/useStore'
 import './index.css'
 
 function App() {
+  const initData = useStore((state) => state.initData);
+  const isInitialized = useStore((state) => state.isInitialized);
+
+  useEffect(() => {
+    initData();
+  }, [initData]);
+
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Check localStorage or system preference during initialization
     const savedTheme = localStorage.getItem('theme')
@@ -33,6 +40,10 @@ function App() {
 
   const toggleTheme = () => {
     setIsDarkMode((prevMode) => !prevMode)
+  }
+
+  if (!isInitialized) {
+    return <div className="flex h-screen w-full items-center justify-center font-mono text-neon-pink">INITIALIZING SECURE CONNECTION...</div>;
   }
 
   return (

@@ -12,8 +12,8 @@ export const generateToken = (req, res) => {
   // Fallback to text if env is missing
   const secret = process.env.JWT_SECRET || 'super_secret_cyber_key_123';
   
-  // Create token that expires in 24 hours
-  const token = jwt.sign(payload, secret, { expiresIn: '24h' });
+  // Create token that expires in 1 minute (For demo purposes)
+  const token = jwt.sign(payload, secret, { expiresIn: '1m' });
   
   return res.status(200).json({ token });
 };
