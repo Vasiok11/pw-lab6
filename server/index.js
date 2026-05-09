@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { setupDatabase } from './db.js';
 import { generateToken, authenticateToken } from './auth.js';
+import { setupRoutes } from './routes.js';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 let db;
 setupDatabase().then((database) => {
   db = database;
+  setupRoutes(app, db); // Mount CRUD routes once DB is ready
 }).catch(err => {
   console.error('[ERROR] Failed to connect to database:', err);
 });
