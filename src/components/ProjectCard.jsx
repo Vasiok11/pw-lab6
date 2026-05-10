@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Trash2, Edit2, X, Check, Star, GitBranch, ExternalLink, Activity } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import ConfirmDialog from './ConfirmDialog';
 
 export default function ProjectCard({ project }) {
   const removeProject = useStore((state) => state.removeProject);
@@ -12,6 +13,7 @@ export default function ProjectCard({ project }) {
 
   const [isEditing, setIsEditing] = useState(false);
   const [toggleError, setToggleError] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [editName, setEditName] = useState(project.name || '');
   const [editDescription, setEditDescription] = useState(project.description || '');  
   const [editTechKeys, setEditTechKeys] = useState((project.techStack || []).join(', '));
@@ -142,12 +144,19 @@ export default function ProjectCard({ project }) {
           )}
           {canDelete && (
             <button
-              onClick={() => removeProject(project.id)}
+              onClick={() => setConfirmDelete(true)}
               className="text-[var(--text-muted)] hover:text-red-500 p-1"
               aria-label="Erase Record"
             >
               <Trash2 size={16} />
             </button>
+          )}
+          {confirmDelete && (
+            <ConfirmDialog
+              message={`Permanently delete project "${project.name}"?`}
+              onConfirm={() => { setConfirmDelete(false); removeProject(project.id); }}
+              onCancel={() => setConfirmDelete(false)}
+            />
           )}
         </div>
       </div>

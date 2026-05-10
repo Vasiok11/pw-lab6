@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { Trash2, Edit2, Link as LinkIcon, BookOpen, MonitorPlay, FileText, CheckCircle2, X, Check } from 'lucide-react';
+import ConfirmDialog from './ConfirmDialog';
 
 export default function ResourceCard({ resource }) {
   const removeResource = useStore((state) => state.removeResource);
@@ -11,6 +12,7 @@ export default function ResourceCard({ resource }) {
   const canDelete = role === 'admin';
 
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [editTitle, setEditTitle] = useState(resource.title || '');
   const [editAuthor, setEditAuthor] = useState(resource.author || '');
   const [editType, setEditType] = useState(resource.type || 'Course');
@@ -150,12 +152,19 @@ export default function ResourceCard({ resource }) {
           )}
           {canDelete && (
             <button
-              onClick={() => removeResource(resource.id)}
+              onClick={() => setConfirmDelete(true)}
               className="text-[var(--text-muted)] hover:text-red-500 p-1 transition-colors"
               title="Delete Resource"
             >
               <Trash2 size={16} />
             </button>
+          )}
+          {confirmDelete && (
+            <ConfirmDialog
+              message={`Permanently delete "${resource.title}"?`}
+              onConfirm={() => { setConfirmDelete(false); removeResource(resource.id); }}
+              onCancel={() => setConfirmDelete(false)}
+            />
           )}
         </div>
       </div>

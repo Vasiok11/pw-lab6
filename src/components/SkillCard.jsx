@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Trash2, Terminal, Edit2, X, Check, BrainCircuit } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import ConfirmDialog from './ConfirmDialog';
 
 export default function SkillCard({ skill }) {
   const removeSkill = useStore((state) => state.removeSkill);
@@ -11,6 +12,7 @@ export default function SkillCard({ skill }) {
   const canDelete = role === 'admin';
 
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [editName, setEditName] = useState(skill.name);
   const [editCategory, setEditCategory] = useState(skill.category);
   const [editProficiency, setEditProficiency] = useState(skill.proficiency);    
@@ -163,12 +165,19 @@ export default function SkillCard({ skill }) {
           )}
           {canDelete && (
             <button
-              onClick={() => removeSkill(skill.id)}
+              onClick={() => setConfirmDelete(true)}
               className="text-[var(--text-muted)] hover:text-red-500 hover:shadow-[0_0_8px_red] transition-all p-1"
               aria-label="Delete Node"
             >
               <Trash2 size={16} />
             </button>
+          )}
+          {confirmDelete && (
+            <ConfirmDialog
+              message={`Permanently delete skill "${skill.name}"?`}
+              onConfirm={() => { setConfirmDelete(false); removeSkill(skill.id); }}
+              onCancel={() => setConfirmDelete(false)}
+            />
           )}
         </div>
       </div>

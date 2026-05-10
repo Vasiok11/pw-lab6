@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { Trash2, Edit2, Building2, MapPin, ExternalLink, Calendar, Briefcase, X, Check, Cpu } from 'lucide-react';
+import ConfirmDialog from './ConfirmDialog';
 
 export default function JobCard({ job }) {
   const removeJob = useStore((state) => state.removeJob);
@@ -11,6 +12,7 @@ export default function JobCard({ job }) {
   const canDelete = role === 'admin';
 
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [editCompany, setEditCompany] = useState(job.company || '');
   const [editPosition, setEditPosition] = useState(job.position || '');
   const [editLocation, setEditLocation] = useState(job.location || '');
@@ -176,12 +178,19 @@ export default function JobCard({ job }) {
           )}
           {canDelete && (
             <button
-              onClick={() => removeJob(job.id)}
+              onClick={() => setConfirmDelete(true)}
               className="text-[var(--text-muted)] hover:text-red-500 p-1 transition-colors"
               title="Delete Application"
             >
               <Trash2 size={16} />
             </button>
+          )}
+          {confirmDelete && (
+            <ConfirmDialog
+              message={`Permanently delete application for "${job.position}" at ${job.company}?`}
+              onConfirm={() => { setConfirmDelete(false); removeJob(job.id); }}
+              onCancel={() => setConfirmDelete(false)}
+            />
           )}
         </div>
       </div>
