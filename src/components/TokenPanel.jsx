@@ -9,6 +9,7 @@ const ROLES = [
     description: 'Full CRUD',
     color: 'text-neon-pink',
     border: 'border-neon-pink',
+    bg: 'bg-pink-500/10',
   },
   {
     value: 'writer',
@@ -16,6 +17,7 @@ const ROLES = [
     description: 'Read + Write',
     color: 'text-yellow-400',
     border: 'border-yellow-400',
+    bg: 'bg-yellow-400/10',
   },
   {
     value: 'visitor',
@@ -23,6 +25,7 @@ const ROLES = [
     description: 'Read only',
     color: 'text-green-400',
     border: 'border-green-400',
+    bg: 'bg-green-400/10',
   },
 ];
 
@@ -150,7 +153,7 @@ export default function TokenPanel() {
             onClick={() => setSelectedRole(r.value)}
             className={`flex items-center justify-between px-2 py-1 border transition-colors text-left ${
               selectedRole === r.value
-                ? `${r.border} bg-[var(--hover-accent)] ${r.color}`
+                ? `${r.border} ${r.bg} ${r.color}`
                 : 'border-[var(--border-accent)] opacity-50 hover:opacity-90'
             }`}
           >
