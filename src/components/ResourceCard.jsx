@@ -176,7 +176,7 @@ export default function ResourceCard({ resource }) {
       <div className="mt-auto pt-2 grid grid-cols-[1fr_auto] gap-4 items-center">
         <div className="flex flex-col gap-1 w-full">
           <div className="flex justify-between text-[10px] uppercase font-bold tracking-widest opacity-80">
-            <span>Download Progress</span>
+            <span>Course Progress</span>
             <span className={isCompleted ? 'text-neon-pink' : 'text-[var(--text-primary)]'}>
               {localProgress}%
             </span>

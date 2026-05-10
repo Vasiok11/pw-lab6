@@ -38,12 +38,6 @@ export default function Dashboard() {
               Overview of your career progress. Tracking {skills.length + projects.length + learningResources.length + jobs.length} total items.
             </p>
           </div>
-          <div className="text-right flex flex-col md:items-end">
-            <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--border-accent)] opacity-70">System Status</span>
-            <span className="font-mono text-green-400 bg-green-900/40 px-2 py-1 border border-green-500 uppercase tracking-widest text-xs font-bold inline-block mt-1">
-              OPTIMAL
-            </span>
-          </div>
         </div>
       </div>
 
