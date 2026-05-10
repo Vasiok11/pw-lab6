@@ -6,6 +6,9 @@ export default function ResourceCard({ resource }) {
   const removeResource = useStore((state) => state.removeResource);
   const updateResourceProgress = useStore((state) => state.updateResourceProgress);
   const updateResource = useStore((state) => state.updateResource);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
+  const canDelete = role === 'admin';
 
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(resource.title || '');
@@ -42,12 +45,19 @@ export default function ResourceCard({ resource }) {
     }
   };
 
+  const [localProgress, setLocalProgress] = useState(resource.progress);
+
   const handleProgressChange = (e) => {
-    const newProgress = parseInt(e.target.value, 10);
-    updateResourceProgress(resource.id, newProgress);
+    setLocalProgress(parseInt(e.target.value, 10));
   };
 
-  const isCompleted = resource.progress === 100;
+  const handleProgressCommit = () => {
+    if (localProgress !== resource.progress) {
+      updateResourceProgress(resource.id, localProgress);
+    }
+  };
+
+  const isCompleted = localProgress === 100;
 
   if (isEditing) {
     return (
@@ -129,21 +139,24 @@ export default function ResourceCard({ resource }) {
 
         {/* Toolbar */}
         <div className="flex items-center gap-2">
-          {/* We will attach the edit toggle here in 7.4 */}
-          <button 
-            onClick={() => setIsEditing(!isEditing)}
-            className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] p-1 transition-colors"
-            title="Edit Resource"
-          >
-            <Edit2 size={16} />
-          </button>
-          <button 
-            onClick={() => removeResource(resource.id)}
-            className="text-[var(--text-muted)] hover:text-red-500 p-1 transition-colors"
-            title="Delete Resource"
-          >
-            <Trash2 size={16} />
-          </button>
+          {canWrite && (
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] p-1 transition-colors"
+              title="Edit Resource"
+            >
+              <Edit2 size={16} />
+            </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={() => removeResource(resource.id)}
+              className="text-[var(--text-muted)] hover:text-red-500 p-1 transition-colors"
+              title="Delete Resource"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -165,20 +178,22 @@ export default function ResourceCard({ resource }) {
           <div className="flex justify-between text-[10px] uppercase font-bold tracking-widest opacity-80">
             <span>Download Progress</span>
             <span className={isCompleted ? 'text-neon-pink' : 'text-[var(--text-primary)]'}>
-              {resource.progress}%
+              {localProgress}%
             </span>
           </div>
           
-          {/* Slider */}
-          <input 
-            type="range" 
-            min="0" 
-            max="100" 
+          {/* Slider — updates locally on drag, saves to API only on release */}
+          <input
+            type="range"
+            min="0"
+            max="100"
             step="5"
-            value={resource.progress}
-            onChange={handleProgressChange}
-            className="w-full h-2 bg-[var(--bg-primary)] border border-[var(--border-accent)] appearance-none cursor-pointer outline-none accent-neon-pink slider-thumb-cyber"
-            // Example of a fallback styling trick if custom slider thumb isn't defined explicitly:
+            value={localProgress}
+            onChange={canWrite ? handleProgressChange : undefined}
+            onMouseUp={canWrite ? handleProgressCommit : undefined}
+            onTouchEnd={canWrite ? handleProgressCommit : undefined}
+            readOnly={!canWrite}
+            className={`w-full h-2 bg-[var(--bg-primary)] border border-[var(--border-accent)] appearance-none outline-none accent-neon-pink slider-thumb-cyber ${canWrite ? 'cursor-pointer' : 'cursor-default opacity-60'}`}
             style={{ accentColor: 'var(--color-cyber-pink)' }}
           />
         </div>

@@ -12,28 +12,35 @@ export default function AddJobForm() {
   const [url, setUrl] = useState('');
   const [status, setStatus] = useState('Applied');
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!company.trim() || !position.trim()) return;
-
-    addJob({
-      company: company.trim(),
-      position: position.trim(),
-      location: location.trim(),
-      url: url.trim(),
-      status, // "Applied", "Interviewing", "Offer", "Rejected"
-      dateApplied: new Date().toISOString(),
-      linkedSkills: selectedSkills
-    });
-
-    // Reset form
-    setCompany('');
-    setPosition('');
-    setLocation('');
-    setUrl('');
-    setStatus('Applied');
-    setSelectedSkills([]);
+    setLoading(true);
+    setError('');
+    try {
+      await addJob({
+        company: company.trim(),
+        position: position.trim(),
+        location: location.trim(),
+        url: url.trim(),
+        status,
+        dateApplied: new Date().toISOString(),
+        linkedSkills: selectedSkills,
+      });
+      setCompany('');
+      setPosition('');
+      setLocation('');
+      setUrl('');
+      setStatus('Applied');
+      setSelectedSkills([]);
+    } catch (err) {
+      setError(err.message || 'API Error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -141,13 +148,17 @@ export default function AddJobForm() {
         <div className="flex justify-end mt-2">
           <button
             type="submit"
-            className="cyber-button w-full md:w-auto min-w-[200px] flex items-center justify-center gap-2 h-[38px] px-4 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)]"
+            disabled={loading}
+            className="cyber-button w-full md:w-auto min-w-[200px] flex items-center justify-center gap-2 h-[38px] px-4 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)] disabled:opacity-40"
           >
             <Send size={16} />
-            <span>TRANSMIT</span>
+            <span>{loading ? 'TRANSMITTING...' : 'TRANSMIT'}</span>
           </button>
         </div>
       </form>
+      {error && (
+        <p className="mt-3 text-red-400 text-xs font-mono">[ERROR] {error}</p>
+      )}
     </div>
   );
 }

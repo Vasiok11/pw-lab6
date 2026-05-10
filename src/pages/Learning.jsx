@@ -6,6 +6,8 @@ import { Search, Filter } from 'lucide-react';
 
 export default function Learning() {
   const learningResources = useStore((state) => state.learningResources);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('All');
 
@@ -31,7 +33,7 @@ export default function Learning() {
         </p>
       </div>
 
-      <AddResourceForm />
+      {canWrite && <AddResourceForm />}
 
       {/* Toolbar */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between border-b border-[var(--border-accent)] border-opacity-30 pb-4">

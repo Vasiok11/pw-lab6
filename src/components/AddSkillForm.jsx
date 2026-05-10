@@ -7,19 +7,22 @@ export default function AddSkillForm() {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('Language');
   const [proficiency, setProficiency] = useState('Beginner');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim()) return;
-
-    addSkill({
-      name: name.trim(),
-      category,
-      proficiency,
-    });
-
-    setName('');
-    // Resetting category/proficiency is optional, but often nice to leave them for rapid multi-add
+    setLoading(true);
+    setError('');
+    try {
+      await addSkill({ name: name.trim(), category, proficiency });
+      setName('');
+    } catch (err) {
+      setError(err.message || 'API Error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,12 +85,16 @@ export default function AddSkillForm() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="cyber-button flex items-center justify-center gap-2 h-[42px] px-6 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)]"
+          disabled={loading}
+          className="cyber-button flex items-center justify-center gap-2 h-[42px] px-6 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)] disabled:opacity-40"
         >
           <PlusSquare size={18} />
-          <span>INJECT</span>
+          <span>{loading ? 'INJECTING...' : 'INJECT'}</span>
         </button>
       </form>
+      {error && (
+        <p className="mt-3 text-red-400 text-xs font-mono">[ERROR] {error}</p>
+      )}
     </div>
   );
 }

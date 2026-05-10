@@ -6,6 +6,8 @@ import { Search, Filter } from 'lucide-react';
 
 export default function Jobs() {
   const jobs = useStore((state) => state.jobs);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
 
@@ -32,7 +34,7 @@ export default function Jobs() {
       </div>
 
       {/* Render the Add Job Form */}
-      <AddJobForm />
+      {canWrite && <AddJobForm />}
 
       {/* Toolbar */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between border-b border-[var(--border-accent)] border-opacity-30 pb-4">

@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { Hexagon, Code2, Briefcase, BookOpen, Target, Settings, TerminalSquare, FileText, Menu, X } from 'lucide-react';
+import TokenPanel from '../components/TokenPanel';
+import { useStore } from '../store/useStore';
 
 export default function RootLayout({ toggleTheme, isDarkMode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const closeMobileMenu = () => setMobileMenuOpen(false);
+  const role = useStore((s) => s.role);
 
   const navItems = [
     { to: '/', icon: <Hexagon size={20} />, label: 'Dashboard' },
@@ -65,18 +68,15 @@ export default function RootLayout({ toggleTheme, isDarkMode }) {
           </nav>
           
           {/* Bottom Settings / Theme Toggle */}
-          <div className="pt-6 border-t font-mono text-xs border-[var(--border-accent)] opacity-80 uppercase relative z-20">
+          <div className="pt-4 border-t font-mono text-xs border-[var(--border-accent)] relative z-20 flex flex-col gap-3">
+            <TokenPanel />
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-3 w-full p-2 hover:text-neon-pink transition-colors font-bold tracking-widest"
+              className="flex items-center gap-3 w-full p-2 hover:text-neon-pink transition-colors font-bold tracking-widest uppercase opacity-80"
             >
               <Settings size={18} className="animate-[spin_4s_linear_infinite]" />
               {isDarkMode ? 'INIT LIGHT_MODE' : 'INIT DARK_MODE'}
             </button>
-            <div className="mt-4 flex flex-col gap-1 opacity-50">
-              <span>STATUS: ONLINE</span>
-              <span>PORT: 5173</span>
-            </div>
           </div>
         </div>
       </aside>
@@ -94,7 +94,7 @@ export default function RootLayout({ toggleTheme, isDarkMode }) {
              </button>
              <div className="font-mono text-sm opacity-60 flex gap-4">
                 <span className="truncate max-w-[150px] md:max-w-max">ROOT_DIR: /home</span>
-                <span className="hidden md:inline">ACCESS_LEVEL: ADMIN</span>
+                <span className="hidden md:inline">ACCESS_LEVEL: {role ? role.toUpperCase() : 'GUEST'}</span>
              </div>
            </div>
            <div className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_#00ff00] animate-pulse"></div>

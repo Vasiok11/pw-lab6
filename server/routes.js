@@ -1,4 +1,4 @@
-import { authenticateToken, requireRole } from './auth.js';
+import { authenticateToken, requireAnyRole } from './auth.js';
 
 export function setupRoutes(app, db) {
   // Define our 4 core entities and which fields need to be handled as JSON arrays
@@ -52,8 +52,8 @@ export function setupRoutes(app, db) {
       }
     });
 
-    // 3. POST (Create) - Protected Route
-    app.post(`/api/${path}`, authenticateToken, async (req, res) => {
+    // 3. POST (Create) - Requires admin or writer role
+    app.post(`/api/${path}`, authenticateToken, requireAnyRole('admin', 'writer'), async (req, res) => {
       try {
         const item = req.body;
         if (!item.id) {
@@ -75,8 +75,8 @@ export function setupRoutes(app, db) {
       }
     });
 
-    // 4. PUT (Update) - Protected Route
-    app.put(`/api/${path}/:id`, authenticateToken, async (req, res) => {
+    // 4. PUT (Update) - Requires admin or writer role
+    app.put(`/api/${path}/:id`, authenticateToken, requireAnyRole('admin', 'writer'), async (req, res) => {
       try {
         const id = req.params.id;
         const item = req.body;
@@ -105,7 +105,7 @@ export function setupRoutes(app, db) {
     });
 
     // 5. DELETE - Strictly Protected Route (Requires 'admin' role)
-    app.delete(`/api/${path}/:id`, authenticateToken, requireRole('admin'), async (req, res) => {
+    app.delete(`/api/${path}/:id`, authenticateToken, requireAnyRole('admin'), async (req, res) => {
       try {
         const id = req.params.id;
         const result = await db.run(`DELETE FROM ${table} WHERE id = ?`, [id]);

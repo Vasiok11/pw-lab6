@@ -6,6 +6,8 @@ import { Search, Star } from 'lucide-react';
 
 export default function Projects() {
   const projects = useStore((state) => state.projects);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
   const [searchQuery, setSearchQuery] = useState('');
   const [filterHighlight, setFilterHighlight] = useState(false);
 
@@ -30,8 +32,7 @@ export default function Projects() {
         </p>
       </div>
 
-      {/* Render the Add Project Form */}
-      <AddProjectForm />
+      {canWrite && <AddProjectForm />}
 
       {/* Projects Toolbar */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between border-b border-[var(--border-accent)] border-opacity-30 pb-4">

@@ -6,6 +6,9 @@ export default function JobCard({ job }) {
   const removeJob = useStore((state) => state.removeJob);
   const updateJob = useStore((state) => state.updateJob);
   const skills = useStore((state) => state.skills);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
+  const canDelete = role === 'admin';
 
   const [isEditing, setIsEditing] = useState(false);
   const [editCompany, setEditCompany] = useState(job.company || '');
@@ -162,21 +165,24 @@ export default function JobCard({ job }) {
 
         {/* Toolbar */}
         <div className="flex items-center gap-2">
-          {/* We will map the inline form drop here in 8.4 */}
-          <button 
-            onClick={() => setIsEditing(!isEditing)}
-            className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] p-1 transition-colors"
-            title="Edit Application"
-          >
-            <Edit2 size={16} />
-          </button>
-          <button 
-            onClick={() => removeJob(job.id)}
-            className="text-[var(--text-muted)] hover:text-red-500 p-1 transition-colors"
-            title="Delete Application"
-          >
-            <Trash2 size={16} />
-          </button>
+          {canWrite && (
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] p-1 transition-colors"
+              title="Edit Application"
+            >
+              <Edit2 size={16} />
+            </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={() => removeJob(job.id)}
+              className="text-[var(--text-muted)] hover:text-red-500 p-1 transition-colors"
+              title="Delete Application"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </div>
 

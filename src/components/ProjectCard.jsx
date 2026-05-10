@@ -6,8 +6,12 @@ export default function ProjectCard({ project }) {
   const removeProject = useStore((state) => state.removeProject);
   const updateProject = useStore((state) => state.updateProject);
   const toggleProjectHighlight = useStore((state) => state.toggleProjectHighlight);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
+  const canDelete = role === 'admin';
 
   const [isEditing, setIsEditing] = useState(false);
+  const [toggleError, setToggleError] = useState('');
   const [editName, setEditName] = useState(project.name || '');
   const [editDescription, setEditDescription] = useState(project.description || '');  
   const [editTechKeys, setEditTechKeys] = useState((project.techStack || []).join(', '));
@@ -111,29 +115,40 @@ export default function ProjectCard({ project }) {
 
         {/* Toolbar */}
         <div className="flex items-center gap-2">
-          {/* Liking/starring a project */}
-          <button
-            onClick={() => toggleProjectHighlight(project.id)}
-            className={`transition-all p-1 ${project.highlighted ? 'text-neon-pink hover:text-white drop-shadow-[0_0_8px_#f0f]' : 'text-[var(--text-muted)] hover:text-neon-pink'}`}
-            aria-label="Toggle Highlight"
-          >
-            <Star size={18} fill={project.highlighted ? "currentColor" : "none"} />
-          </button>
-
-          <button
-            onClick={() => setIsEditing(true)}
-            className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] p-1 ml-2"
-            aria-label="Edit Record"
-          >
-            <Edit2 size={16} />
-          </button>
-          <button
-            onClick={() => removeProject(project.id)}
-            className="text-[var(--text-muted)] hover:text-red-500 p-1"
-            aria-label="Erase Record"
-          >
-            <Trash2 size={16} />
-          </button>
+          {canWrite && (
+            <button
+              onClick={async () => {
+                setToggleError('');
+                try {
+                  await toggleProjectHighlight(project.id);
+                } catch (err) {
+                  setToggleError(err.message || 'Error');
+                }
+              }}
+              className={`transition-all p-1 ${project.highlighted ? 'text-neon-pink hover:text-white drop-shadow-[0_0_8px_#f0f]' : 'text-[var(--text-muted)] hover:text-neon-pink'}`}
+              aria-label="Toggle Highlight"
+            >
+              <Star size={18} fill={project.highlighted ? "currentColor" : "none"} />
+            </button>
+          )}
+          {canWrite && (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] p-1 ml-2"
+              aria-label="Edit Record"
+            >
+              <Edit2 size={16} />
+            </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={() => removeProject(project.id)}
+              className="text-[var(--text-muted)] hover:text-red-500 p-1"
+              aria-label="Erase Record"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -151,6 +166,10 @@ export default function ProjectCard({ project }) {
             </span>
           ))}
         </div>
+      )}
+
+      {toggleError && (
+        <p className="text-red-400 text-[10px] font-mono mb-2">[ERROR] {toggleError}</p>
       )}
 
       {/* External Links */}

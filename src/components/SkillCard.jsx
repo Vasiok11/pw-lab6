@@ -6,6 +6,9 @@ export default function SkillCard({ skill }) {
   const removeSkill = useStore((state) => state.removeSkill);
   const updateSkill = useStore((state) => state.updateSkill);
   const learningResources = useStore((state) => state.learningResources);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
+  const canDelete = role === 'admin';
 
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(skill.name);
@@ -149,20 +152,24 @@ export default function SkillCard({ skill }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <button
-            onClick={() => setIsEditing(true)}
-            className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] hover:shadow-[0_0_8px_var(--shadow-accent)] transition-all p-1"
-            aria-label="Edit Node"
-          >
-            <Edit2 size={16} />
-          </button>
-          <button
-            onClick={() => removeSkill(skill.id)}
-            className="text-[var(--text-muted)] hover:text-red-500 hover:shadow-[0_0_8px_red] transition-all p-1"
-            aria-label="Delete Node"
-          >
-            <Trash2 size={16} />
-          </button>
+          {canWrite && (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="text-[var(--text-muted)] hover:text-[var(--hover-accent)] hover:shadow-[0_0_8px_var(--shadow-accent)] transition-all p-1"
+              aria-label="Edit Node"
+            >
+              <Edit2 size={16} />
+            </button>
+          )}
+          {canDelete && (
+            <button
+              onClick={() => removeSkill(skill.id)}
+              className="text-[var(--text-muted)] hover:text-red-500 hover:shadow-[0_0_8px_red] transition-all p-1"
+              aria-label="Delete Node"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </div>
 

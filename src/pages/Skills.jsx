@@ -6,6 +6,8 @@ import { Search, Filter } from 'lucide-react';
 
 export default function Skills() {
   const skills = useStore((state) => state.skills);
+  const role = useStore((state) => state.role);
+  const canWrite = role === 'admin' || role === 'writer';
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
 
@@ -28,8 +30,7 @@ export default function Skills() {
         </p>
       </div>
 
-      {/* Render the form here! */}
-      <AddSkillForm />
+      {canWrite && <AddSkillForm />}
 
       {/* Search and Filters Toolbar */}
       <div className="w-full flex  flex-col md:flex-row gap-4 items-center justify-between border-b border-[var(--border-accent)] border-opacity-30 pb-4">

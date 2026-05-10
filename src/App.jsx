@@ -6,6 +6,7 @@ import Skills from './pages/Skills'
 import Projects from './pages/Projects'
 import Learning from './pages/Learning'
 import Jobs from './pages/Jobs'
+import ResumeBuilder from './pages/ResumeBuilder'
 import { useStore } from './store/useStore'
 import './index.css'
 

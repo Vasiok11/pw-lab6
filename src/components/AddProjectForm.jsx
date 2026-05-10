@@ -11,34 +11,35 @@ export default function AddProjectForm() {
   const [repoLink, setRepoLink] = useState('');
   const [liveLink, setLiveLink] = useState('');
   const [highlighted, setHighlighted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim() || !description.trim()) return;
-
-    // Convert comma string to an array: "React, Tailwind, Node" -> ["React", "Tailwind", "Node"]
-    const techStack = techKeys
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean);
-
-    addProject({
-      name: name.trim(),
-      description: description.trim(),
-      techStack,
-      repoLink: repoLink.trim(),
-      liveLink: liveLink.trim(),
-      highlighted,
-      status: 'completed', // defaulted
-    });
-
-    // Reset form
-    setName('');
-    setDescription('');
-    setTechKeys('');
-    setRepoLink('');
-    setLiveLink('');
-    setHighlighted(false);
+    const techStack = techKeys.split(',').map((t) => t.trim()).filter(Boolean);
+    setLoading(true);
+    setError('');
+    try {
+      await addProject({
+        name: name.trim(),
+        description: description.trim(),
+        techStack,
+        repoLink: repoLink.trim(),
+        liveLink: liveLink.trim(),
+        highlighted,
+      });
+      setName('');
+      setDescription('');
+      setTechKeys('');
+      setRepoLink('');
+      setLiveLink('');
+      setHighlighted(false);
+    } catch (err) {
+      setError(err.message || 'API Error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -129,12 +130,16 @@ export default function AddProjectForm() {
 
         <button
           type="submit"
-          className="cyber-button mt-4 w-full md:w-auto self-end flex items-center justify-center gap-2 h-[42px] px-8 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)]"
+          disabled={loading}
+          className="cyber-button mt-4 w-full md:w-auto self-end flex items-center justify-center gap-2 h-[42px] px-8 bg-[var(--bg-primary)] text-neon-pink border-[var(--border-accent)] hover:bg-[var(--hover-accent)] hover:text-[var(--hover-text)] disabled:opacity-40"
         >
           <PlusSquare size={18} />
-          <span>COMMIT_RECORD</span>
+          <span>{loading ? 'COMMITTING...' : 'COMMIT_RECORD'}</span>
         </button>
       </form>
+      {error && (
+        <p className="mt-3 text-red-400 text-xs font-mono">[ERROR] {error}</p>
+      )}
     </div>
   );
 }
