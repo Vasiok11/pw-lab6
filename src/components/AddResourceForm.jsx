@@ -72,14 +72,16 @@ export default function AddResourceForm() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 items-end">
-          {/* Source URL/Platform */}
+          {/* Source — label/placeholder adapts to type */}
           <div className="flex flex-col w-full md:w-1/2">
-            <label className="text-[10px] uppercase font-bold opacity-70 mb-1">Source URL</label>
+            <label className="text-[10px] uppercase font-bold opacity-70 mb-1">
+              {type === 'Book' ? 'Publisher / ISBN' : 'Source URL'}
+            </label>
             <input
               type="text"
               value={source}
               onChange={(e) => setSource(e.target.value)}
-              placeholder="https://..."
+              placeholder={type === 'Book' ? "e.g., O'Reilly — 978-1491950357" : 'https://...'}
               className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none focus:shadow-[var(--shadow-accent)] transition-shadow text-sm"
             />
           </div>

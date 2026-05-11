@@ -99,11 +99,14 @@ export default function ResourceCard({ resource }) {
             </div>
           </div>
 
-          <label className="text-[10px] uppercase font-bold opacity-70 mt-1">Source URL</label>
+          <label className="text-[10px] uppercase font-bold opacity-70 mt-1">
+            {editType === 'Book' ? 'Publisher / ISBN' : 'Source URL'}
+          </label>
           <input
             type="text"
             value={editSource}
             onChange={(e) => setEditSource(e.target.value)}
+            placeholder={editType === 'Book' ? "e.g., O'Reilly — 978-1491950357" : 'https://...'}
             className="w-full bg-[var(--bg-primary)] border border-[var(--border-accent)] p-2 text-[var(--text-primary)] outline-none text-sm"
           />
 
@@ -169,15 +172,15 @@ export default function ResourceCard({ resource }) {
         </div>
       </div>
 
-      {/* External Link */}
-      {resource.source && (
-        <a 
-          href={resource.source} 
-          target="_blank" 
-          rel="noopener noreferrer" 
+      {/* External Link — hidden for books since source is publisher/ISBN, not a URL */}
+      {resource.source && resource.type !== 'Book' && (
+        <a
+          href={resource.source}
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-xs font-mono text-[var(--border-accent)] hover:text-neon-pink flex items-center gap-1 mb-4 opacity-80"
         >
-          <LinkIcon size={12} /> Source Data Node
+          <LinkIcon size={12} /> Source
         </a>
       )}
 
@@ -185,7 +188,7 @@ export default function ResourceCard({ resource }) {
       <div className="mt-auto pt-2 grid grid-cols-[1fr_auto] gap-4 items-center">
         <div className="flex flex-col gap-1 w-full">
           <div className="flex justify-between text-[10px] uppercase font-bold tracking-widest opacity-80">
-            <span>Course Progress</span>
+            <span>Progress</span>
             <span className={isCompleted ? 'text-neon-pink' : 'text-[var(--text-primary)]'}>
               {localProgress}%
             </span>

@@ -2,15 +2,50 @@ import { useStore } from '../store/useStore';
 import { Activity, Briefcase, Code2, BrainCircuit, Star, ExternalLink, Calendar, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const SKILL_CATEGORIES = [
+  { key: 'Language',   label: 'Language',   color: 'bg-neon-pink' },
+  { key: 'Framework',  label: 'Framework',  color: 'bg-[var(--color-cyber-blue)]' },
+  { key: 'Database',   label: 'Database',   color: 'bg-yellow-400' },
+  { key: 'Tools',      label: 'Tools',      color: 'bg-green-400' },
+  { key: 'Soft Skill', label: 'Soft Skill', color: 'bg-purple-400' },
+];
+
+const JOB_STAGES = [
+  { key: 'Applied',      label: 'Applied',      color: 'text-[var(--border-accent)] border-[var(--border-accent)]' },
+  { key: 'Interviewing', label: 'Interview',     color: 'text-yellow-400 border-yellow-400' },
+  { key: 'Offer',        label: 'Offer',         color: 'text-green-400 border-green-400' },
+  { key: 'Rejected',     label: 'Rejected',      color: 'text-red-500 border-red-500' },
+];
+
 export default function Dashboard() {
   const { skills, projects, learningResources, jobs } = useStore();
 
   // Quick Analytics
   const topProjects = projects.filter(p => p.highlighted).slice(0, 3);
   const activeJobs = jobs.filter(j => j.status === 'Interviewing' || j.status === 'Offer');
-  
+
   const completedResources = learningResources.filter(r => r.progress === 100).length;
   const learningProgress = learningResources.filter(r => r.progress > 0 && r.progress < 100).length;
+
+  // Skill breakdown
+  const skillCategoryCounts = SKILL_CATEGORIES.map(cat => ({
+    ...cat,
+    count: skills.filter(s => s.category === cat.key).length,
+  }));
+
+  // Job funnel
+  const jobStageCounts = JOB_STAGES.map(stage => ({
+    ...stage,
+    count: jobs.filter(j => j.status === stage.key).length,
+  }));
+
+  // Learning completion ring
+  const overallProgress = learningResources.length > 0
+    ? Math.round(learningResources.reduce((sum, r) => sum + (r.progress || 0), 0) / learningResources.length)
+    : 0;
+  const ringRadius = 36;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const ringOffset = ringCircumference * (1 - overallProgress / 100);
 
   const handleExport = () => {
     const data = { skills, projects, learningResources, jobs };
@@ -78,6 +113,94 @@ export default function Dashboard() {
             <span className="text-yellow-400">{activeJobs.length} Int</span>
           </div>
         </Link>
+      </div>
+
+      {/* Stats Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        {/* Skill Category Breakdown */}
+        <div className="cyber-panel p-5 flex flex-col gap-3">
+          <h3 className="text-xs font-black uppercase tracking-widest text-[var(--border-accent)] border-b border-[var(--border-accent)] border-opacity-30 pb-2">
+            Skills by Category
+          </h3>
+          {skillCategoryCounts.map(cat => (
+            <div key={cat.key} className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider">
+              <div className="flex items-center gap-2">
+                <span className={`w-2 h-2 rounded-full shrink-0 ${cat.color}`} />
+                <span className="opacity-70">{cat.label}</span>
+              </div>
+              <span className="font-black">{cat.count}</span>
+            </div>
+          ))}
+          {skills.length === 0 && (
+            <span className="text-[10px] font-mono opacity-40 uppercase">[NO_DATA]</span>
+          )}
+        </div>
+
+        {/* Job Funnel */}
+        <div className="cyber-panel p-5 flex flex-col gap-3">
+          <h3 className="text-xs font-black uppercase tracking-widest text-[var(--border-accent)] border-b border-[var(--border-accent)] border-opacity-30 pb-2">
+            Job Funnel
+          </h3>
+          <div className="flex flex-col gap-2 flex-1 justify-center">
+            {jobStageCounts.map((stage, i) => (
+              <div key={stage.key} className="flex items-center gap-3">
+                <div className={`border px-2 py-1 text-[10px] font-black uppercase tracking-widest w-20 text-center shrink-0 ${stage.color}`}>
+                  {stage.label}
+                </div>
+                <div className="flex-1 h-1.5 bg-[var(--bg-primary)] border border-[var(--border-accent)] border-opacity-30">
+                  <div
+                    className={`h-full transition-all duration-500 ${
+                      i === 0 ? 'bg-[var(--border-accent)]' :
+                      i === 1 ? 'bg-yellow-400' :
+                      i === 2 ? 'bg-green-400' : 'bg-red-500'
+                    }`}
+                    style={{ width: jobs.length > 0 ? `${(stage.count / jobs.length) * 100}%` : '0%' }}
+                  />
+                </div>
+                <span className="text-xs font-black w-4 text-right">{stage.count}</span>
+              </div>
+            ))}
+          </div>
+          {jobs.length === 0 && (
+            <span className="text-[10px] font-mono opacity-40 uppercase">[NO_DATA]</span>
+          )}
+        </div>
+
+        {/* Learning Completion Ring */}
+        <div className="cyber-panel p-5 flex flex-col gap-3">
+          <h3 className="text-xs font-black uppercase tracking-widest text-[var(--border-accent)] border-b border-[var(--border-accent)] border-opacity-30 pb-2">
+            Learning Progress
+          </h3>
+          <div className="flex items-center gap-6 flex-1">
+            <svg width="90" height="90" className="shrink-0 -rotate-90">
+              <circle cx="45" cy="45" r={ringRadius} fill="none" stroke="var(--border-accent)" strokeWidth="6" opacity="0.2" />
+              <circle
+                cx="45" cy="45" r={ringRadius}
+                fill="none"
+                stroke="var(--color-cyber-pink)"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeDasharray={ringCircumference}
+                strokeDashoffset={ringOffset}
+                style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+              />
+            </svg>
+            <div className="flex flex-col gap-1 font-mono">
+              <span className="text-3xl font-black text-neon-pink">{overallProgress}%</span>
+              <span className="text-[10px] uppercase tracking-widest opacity-60">Avg. Progress</span>
+              <div className="flex flex-col gap-0.5 mt-2 text-[10px] uppercase tracking-wider">
+                <span className="text-green-400">{completedResources} completed</span>
+                <span className="text-yellow-400">{learningProgress} in progress</span>
+                <span className="opacity-50">{learningResources.length - completedResources - learningProgress} not started</span>
+              </div>
+            </div>
+          </div>
+          {learningResources.length === 0 && (
+            <span className="text-[10px] font-mono opacity-40 uppercase">[NO_DATA]</span>
+          )}
+        </div>
+
       </div>
 
       {/* Featured Feed */}
